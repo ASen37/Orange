@@ -1,0 +1,6 @@
+[submodule "OrangeEngine/vendor/spdlog"]
+	path = OrangeEngine/vendor/spdlog
+	url = https://github.com/gabime/spdlog
+[submodule "OrangeEngine/vendor/GLFW"]
+	path = OrangeEngine/vendor/GLFW
+	url = https://github.com/TheCherno/glfw
