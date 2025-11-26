@@ -1,0 +1,7 @@
+tmp
+.vs
+*.sln
+bin
+bin-int
+OrangeEngine/*vcxproj*
+SandBox/*vcxproj*
