@@ -10,6 +10,11 @@ workspace "Orange"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
+IncludeDir = {}
+IncludeDir["GLFW"] = "OrangeEngine/vendor/GLFW/include"
+
+include "OrangeEngine/vendor/GLFW"
+
 project "OrangeEngine"
     location "OrangeEngine"
     kind "SharedLib"
@@ -30,8 +35,16 @@ project "OrangeEngine"
     includedirs
     {
         "%{prj.name}/src",
-        "%{prj.name}/vendor/spdlog/include"
+        "%{prj.name}/vendor/spdlog/include",
+        "%{IncludeDir.GLFW}"
     }
+
+    links
+    {
+        "GLFW",
+        "opengl32.lib"
+    }
+
 
     filter "system:windows"
         cppdialect "C++17"
@@ -42,7 +55,8 @@ project "OrangeEngine"
         {
             "ORANGE_PLATFORM_WINDOWS",
             "ORANGE_BUILD_DLL",
-            "FMT_HEADER_ONLY"
+            "FMT_HEADER_ONLY",
+            "GLFW_STATIC"
         }
 
         postbuildcommands
@@ -97,7 +111,8 @@ project "Sandbox"
         defines
         {
             "ORANGE_PLATFORM_WINDOWS",
-            "FMT_HEADER_ONLY"
+            "FMT_HEADER_ONLY",
+            "GLFW_STATIC"
         }
 
     filter "configurations:Debug"

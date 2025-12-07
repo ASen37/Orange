@@ -1,10 +1,11 @@
 #pragma once
 
 #include "Event.h"
+#include <sstream>
 
 namespace Orange
 {
-	class WindowResizeEvent : public Event
+	class ORANGE_API WindowResizeEvent : public Event
 	{
 	public:
 		WindowResizeEvent(unsigned int width, unsigned int height)
@@ -26,7 +27,7 @@ namespace Orange
 		unsigned int m_Width, m_Height;
 	};
 
-	class WindowCloseEvent : public Event
+	class ORANGE_API WindowCloseEvent : public Event
 	{
 	public:
 		WindowCloseEvent() = default;

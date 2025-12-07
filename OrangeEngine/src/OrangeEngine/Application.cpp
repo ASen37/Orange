@@ -5,29 +5,38 @@
 
 namespace Orange
 {
-	Application::Application() {
+#define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
 
+	Application::Application()
+	{
+		m_Window = std::unique_ptr<Window>(Window::Create());
+		m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
 	}
 
-	Application::~Application() {
-	
+	Application::~Application()
+	{
 	}
 
-	void Application::Run() {
-		WindowResizeEvent e(100, 720);
-		
-		if (e.IsInCategory(EventCategoryApplication)) 
+	void Application::OnEvent(Event& e)
+	{
+		EventDispatcher dispatcher(e);
+		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
+
+		ORANGE_CORE_TRACE(e.ToString());
+	}
+
+	void Application::Run()
+	{
+		while (m_Running)
 		{
-			ORANGE_TRACE(e);
+			m_Window->OnUpdate();
 		}
-
-		if (e.IsInCategory(EventCategoryInput))
-		{
-			ORANGE_TRACE(e);
-		}
-
-		while (true);
 	}
 
+	bool Application::OnWindowClose(WindowCloseEvent& e)
+	{
+		m_Running = false;
+		return true;
+	}
 
 } // namespace Orange

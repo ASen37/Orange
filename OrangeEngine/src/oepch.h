@@ -12,6 +12,9 @@
 #include <unordered_map>
 #include <unordered_set>
 
+#define SPEC_CLASS_ENABLE
+#include "OrangeEngine/Log.h"
+
 #ifdef ORANGE_PLATFORM_WINDOWS
 	#include <Windows.h>
 #endif
