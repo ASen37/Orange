@@ -13,6 +13,8 @@
 #include <unordered_set>
 
 #define SPEC_CLASS_ENABLE
+#define ORANGE_ENABLE_ASSERTS
+
 #include "OrangeEngine/Log.h"
 
 #ifdef ORANGE_PLATFORM_WINDOWS

@@ -1,7 +1,9 @@
 #include "oepch.h"
-#include "OrangeEngine/Log.h"
 #include "Application.h"
-#include "OrangeEngine/Events/ApplicationEvent.h"
+
+#include "OrangeEngine/Log.h"
+
+#include <glad/glad.h>
 
 namespace Orange
 {
@@ -11,6 +13,9 @@ namespace Orange
 	{
 		m_Window = std::unique_ptr<Window>(Window::Create());
 		m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
+
+		unsigned int id;
+		glGenVertexArrays(1, &id);
 	}
 
 	Application::~Application()
@@ -22,15 +27,35 @@ namespace Orange
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
 
-		ORANGE_CORE_TRACE(e.ToString());
+		//ORANGE_CORE_TRACE(e.ToString());
+
+		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin(); )
+		{
+			(*--it)->OnEvent(e);
+			if (e.m_Handled)
+				break;
+		}
 	}
 
 	void Application::Run()
 	{
 		while (m_Running)
 		{
+			for (Layer* layer : m_LayerStack)
+				layer->OnUpdate();
+
 			m_Window->OnUpdate();
 		}
+	}
+
+	void Application::PushLayer(Layer* layer)
+	{
+		m_LayerStack.PushLayer(layer);
+	}
+
+	void Application::PushOverlay(Layer* overlay)
+	{
+		m_LayerStack.PushOverlay(overlay);
 	}
 
 	bool Application::OnWindowClose(WindowCloseEvent& e)

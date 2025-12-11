@@ -12,8 +12,10 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 IncludeDir = {}
 IncludeDir["GLFW"] = "OrangeEngine/vendor/GLFW/include"
+IncludeDir["Glad"] = "OrangeEngine/vendor/Glad/include"
 
 include "OrangeEngine/vendor/GLFW"
+include "OrangeEngine/vendor/Glad"
 
 project "OrangeEngine"
     location "OrangeEngine"
@@ -36,12 +38,14 @@ project "OrangeEngine"
     {
         "%{prj.name}/src",
         "%{prj.name}/vendor/spdlog/include",
-        "%{IncludeDir.GLFW}"
+        "%{IncludeDir.GLFW}",
+        "%{IncludeDir.Glad}"
     }
 
     links
     {
         "GLFW",
+        "Glad",
         "opengl32.lib"
     }
 
@@ -56,7 +60,8 @@ project "OrangeEngine"
             "ORANGE_PLATFORM_WINDOWS",
             "ORANGE_BUILD_DLL",
             "FMT_HEADER_ONLY",
-            "GLFW_STATIC"
+            "GLFW_STATIC",
+            "GLFW_INCLUDE_NONE"
         }
 
         postbuildcommands
@@ -66,14 +71,17 @@ project "OrangeEngine"
 
     filter "configurations:Debug"
         defines "ORANGE_DEBUG"
+        buildoptions "/MDd"
         symbols "On"
 
     filter "configurations:Release"
         defines "ORANGE_RELEASE"
+        buildoptions "/MD"
         optimize "On"
     
     filter "configurations:Dist"
         defines "ORANGE_DIST"
+        buildoptions "/MD"
         optimize "On"
 
 
@@ -117,12 +125,15 @@ project "Sandbox"
 
     filter "configurations:Debug"
         defines "ORANGE_DEBUG"
+        buildoptions "/MDd"
         symbols "On"
 
     filter "configurations:Release"
         defines "ORANGE_RELEASE"
+        buildoptions "/MD"
         optimize "On"
     
     filter "configurations:Dist"
         defines "ORANGE_DIST"
+        buildoptions "/MD"
         optimize "On"
